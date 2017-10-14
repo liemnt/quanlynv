@@ -1,0 +1,36 @@
+.management {
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 15px;
+}
+
+.btn {
+  min-width: 10rem;
+  &-middle {
+    text-align: center;
+  }
+  &-right {
+    float: right;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+  &-group {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+}
+
+.margin {
+  &-R10 {
+    margin-right: 10px;
+  }
+}
+
+#ui-datepicker-div {
+  z-index: 9999 !important;;
+}
+
+

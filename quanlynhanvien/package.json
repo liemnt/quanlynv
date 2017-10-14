@@ -1,0 +1,30 @@
+{
+  "name": "quanlynv",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.16.2",
+    "bootstrap": "^4.0.0-beta",
+    "classnames": "^2.2.5",
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
+    "lodash": "^4.17.4",
+    "popper": "^1.0.0",
+    "popper.js": "^1.12.5",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^3.0.5",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.14"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
