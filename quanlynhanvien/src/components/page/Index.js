@@ -1,14 +1,13 @@
-import React from 'react'
-import Container from'../Container'
-import Title from '../Title'
-import DropDownBtn from '../DropDownBtn'
-import TableHeader from '../TableHeader'
-import Table from '../Table'
-import TableBody from '../TableBody'
-import _ from 'lodash';
-import TableRow from '../TableRow'
-import {fetchEmployers} from '../../actions/App'
-import {connect} from 'react-redux'
+import React from "react";
+import Container from "../Container";
+import Title from "../Title";
+import DropDownBtn from "../DropDownBtn";
+import TableHeader from "../TableHeader";
+import Table from "../Table";
+import TableBody from "../TableBody";
+import TableRow from "../TableRow";
+import {fetchEmployers} from "../../actions/App";
+import {connect} from "react-redux";
 
 class Index extends React.Component {
 
@@ -56,7 +55,6 @@ class Index extends React.Component {
     }
 
     render() {
-        console.log(this.props.employers);
         return (
             <div>
                 <Container>

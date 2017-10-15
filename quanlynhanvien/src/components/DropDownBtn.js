@@ -1,8 +1,8 @@
-import React from 'react'
-import 'bootstrap/dist/js/bootstrap.min'
+import React from "react";
+import "bootstrap/dist/js/bootstrap.min";
 
-import 'popper.js/dist/umd/popper.min'
-import classNames from 'classnames'
+import "popper.js/dist/umd/popper.min";
+import classNames from "classnames";
 
 
 export default class DropDownBtn extends React.Component {
@@ -12,7 +12,6 @@ export default class DropDownBtn extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(this.props.data);
         this.state = {
             clickedItem: this.props.data[0]
         }

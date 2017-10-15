@@ -1,15 +1,15 @@
-import React from 'react'
-import Container from'../Container'
-import Title from '../Title'
-import DropDownBtn from '../DropDownBtn'
-import TableHeader from '../TableHeader'
-import Table from '../Table'
-import TableBody from '../TableBody'
-import TableRow from '../TableRow'
-import {fetchDepartments, fetchEmployers} from '../../actions/App'
-import {deleteEmployer} from '../../actions/PostData'
-import {connect} from 'react-redux'
-import ModalEmployer from '../ModalEmployer'
+import React from "react";
+import Container from "../Container";
+import Title from "../Title";
+import DropDownBtn from "../DropDownBtn";
+import TableHeader from "../TableHeader";
+import Table from "../Table";
+import TableBody from "../TableBody";
+import TableRow from "../TableRow";
+import {fetchDepartments, fetchEmployers} from "../../actions/App";
+import {deleteEmployer} from "../../actions/PostData";
+import {connect} from "react-redux";
+import ModalEmployer from "../ModalEmployer";
 
 class Management extends React.Component {
     constructor(props) {
@@ -65,7 +65,6 @@ class Management extends React.Component {
         }
     }
     onClickAdd = () => {
-        console.log('clickAdd')
         this.setState({
             selectedItem: null
         })

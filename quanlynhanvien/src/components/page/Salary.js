@@ -1,14 +1,14 @@
-import React from 'react'
-import Container from'../Container'
-import Title from '../Title'
-import DropDownBtn from '../DropDownBtn'
-import TableHeader from '../TableHeader'
-import Table from '../Table'
-import TableBody from '../TableBody'
-import TableRow from '../TableRow'
-import {fetchDepartments, fetchSalaryEmployer} from '../../actions/App'
-import {postCalcParttimeSalary, postCalcFulltimeSalary} from '../../actions/PostData'
-import {connect} from 'react-redux';
+import React from "react";
+import Container from "../Container";
+import Title from "../Title";
+import DropDownBtn from "../DropDownBtn";
+import TableHeader from "../TableHeader";
+import Table from "../Table";
+import TableBody from "../TableBody";
+import TableRow from "../TableRow";
+import {fetchDepartments, fetchSalaryEmployer} from "../../actions/App";
+import {postCalcFulltimeSalary, postCalcParttimeSalary} from "../../actions/PostData";
+import {connect} from "react-redux";
 
 class Salary extends React.Component {
     componentWillMount = () => {
@@ -47,7 +47,8 @@ class Salary extends React.Component {
     renderTableRow = () => {
         return this.props.employers.data.map((item) => {
             return (
-                <TableRow onInputChange={this.onCellWorkingDayChange} type="statistic"
+                <TableRow addWorkingDay={this.state.addWorkingDay} onInputChange={this.onCellWorkingDayChange}
+                          type="statistic"
                           display={this.state.employerType.id} data={item}/>
             )
 
@@ -80,7 +81,6 @@ class Salary extends React.Component {
                         "working_month_id": this.state.selectedWorkingMonth.id.toString()
                     }
                     postCalcParttimeSalary(data, this.getData.bind(this, this.state.employerType, this.state.selectedWorkingMonth))
-                    console.log(key);
                 }
             }
         }
@@ -96,6 +96,9 @@ class Salary extends React.Component {
                 }
             })
         }
+        this.setState({
+            addWorkingDay: {}
+        })
 
     }
     renderMonth = () => {
@@ -115,7 +118,6 @@ class Salary extends React.Component {
     }
 
     render() {
-        console.log(this.props.data);
         return (
             <div>
                 <Container>

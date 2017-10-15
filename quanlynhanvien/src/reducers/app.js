@@ -1,4 +1,4 @@
-import * as Actions from '../constants/App';
+import * as Actions from "../constants/App";
 
 const initialState = {
     employers: {},

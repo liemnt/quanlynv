@@ -1,11 +1,16 @@
-import React from 'react'
-import $ from 'jquery'
-import 'bootstrap/dist/js/bootstrap.min'
-import 'jquery-ui/ui/widgets/datepicker'
-import {postFulltimeEmployer, postParttimeEmployer, putFullTimeEmployer, putParttimeEmployer} from '../actions/PostData'
-import DropDownBtn from '../components/DropDownBtn'
-import {parseBirthdayForServer} from '../utils/Utils'
-import {connect} from 'react-redux';
+import React from "react";
+import $ from "jquery";
+import "bootstrap/dist/js/bootstrap.min";
+import "jquery-ui/ui/widgets/datepicker";
+import {
+    postFulltimeEmployer,
+    postParttimeEmployer,
+    putFullTimeEmployer,
+    putParttimeEmployer
+} from "../actions/PostData";
+import DropDownBtn from "../components/DropDownBtn";
+import {parseBirthdayForServer} from "../utils/Utils";
+import {connect} from "react-redux";
 
 
 class ModalEmployer extends React.Component {
@@ -142,7 +147,6 @@ class ModalEmployer extends React.Component {
 
     }
     onSelectDepartment = (item) => {
-        console.log('departmentChange', item)
         this.setState({
             department_id: item.id
         })

@@ -1,12 +1,11 @@
-import * as Types from '../constants/App'
-import axios from '../config/axios'
-import * as api from '../config/api'
+import * as Types from "../constants/App";
+import axios from "../config/axios";
+import * as api from "../config/api";
 
 export function fetchEmployers(departmentID) {
     return function (dispatch) {
         axios.get(api.apiGetEmployers(departmentID)).then(
             (response) => {
-                console.log(response);
                 dispatch({
                     type: Types.FETCH_EMPLOYERS,
                     serverData: response.data
@@ -26,7 +25,6 @@ export function fetchEmployersManagement(departmentID) {
     return function (dispatch) {
         axios.get(api.apiGetEmployers(departmentID)).then(
             (response) => {
-                console.log(response);
                 dispatch({
                     type: Types.FETCH_DEPARTMENTS_MANAGEMENT,
                     serverData: response.data

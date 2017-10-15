@@ -1,13 +1,13 @@
-import React from 'react'
-import Container from'../Container'
-import Title from '../Title'
-import DropDownBtn from '../DropDownBtn'
-import TableHeader from '../TableHeader'
-import Table from '../Table'
-import TableBody from '../TableBody'
-import TableRow from '../TableRow'
-import {fetchEmployers, fetchDepartments, fetchMaxSalary} from '../../actions/App'
-import {connect} from 'react-redux'
+import React from "react";
+import Container from "../Container";
+import Title from "../Title";
+import DropDownBtn from "../DropDownBtn";
+import TableHeader from "../TableHeader";
+import Table from "../Table";
+import TableBody from "../TableBody";
+import TableRow from "../TableRow";
+import {fetchDepartments, fetchEmployers, fetchMaxSalary} from "../../actions/App";
+import {connect} from "react-redux";
 
 class Statistic extends React.Component {
     // componentWillMount = () => {
@@ -52,7 +52,6 @@ class Statistic extends React.Component {
     }
 
     render() {
-        console.log(this.props.data);
         return (
             <div>
                 <Container>

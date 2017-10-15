@@ -1,19 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reducer from './reducers/index'
-import Index from './components/page/Index'
-import Statistic from './components/page/Statistic'
-import Management from './components/page/Management'
-import Salary from './components/page/Salary'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reducer from "./reducers/index";
+import Index from "./components/page/Index";
+import Statistic from "./components/page/Statistic";
+import Management from "./components/page/Management";
+import Salary from "./components/page/Salary";
 
-import {Provider} from 'react-redux'
-import {createStore, applyMiddleware} from 'redux'
-import {Router, Route, browserHistory, IndexnpmRoute, IndexRoute} from 'react-router';
-import registerServiceWorker from './registerServiceWorker';
+import {Provider} from "react-redux";
+import {applyMiddleware, createStore} from "redux";
+import {browserHistory, IndexnpmRoute, Route, Router} from "react-router";
 
-import reduxThunk from 'redux-thunk';
+import reduxThunk from "redux-thunk";
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 

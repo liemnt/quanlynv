@@ -1,6 +1,5 @@
-import axios from '../config/axios'
-import * as api from '../config/api'
-import * as Actions from '../actions/App'
+import axios from "../config/axios";
+import * as api from "../config/api";
 
 
 export const postFulltimeEmployer = (objectData, callback) => {

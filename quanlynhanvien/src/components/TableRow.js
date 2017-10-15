@@ -1,7 +1,6 @@
-import React from 'react'
-import {connect} from 'react-redux';
-import {numberWithCommas} from '../utils/Utils'
-import {parseBirthdayForClient} from '../utils/Utils'
+import React from "react";
+import {connect} from "react-redux";
+import {numberWithCommas, parseBirthdayForClient} from "../utils/Utils";
 // arrCell.push(<td className="text-center"><input type="text" className="form-control" id="id"
 //                                                 aria-describedby="basic-addon3"/></td>)
 class TableRow extends React.Component {
@@ -26,6 +25,13 @@ class TableRow extends React.Component {
         this.setState({
             [event.target.name]: event.target.value
         })
+    }
+    componentWillReceiveProps = (nextProps) => {
+        if (nextProps.addWorkingDay) {
+            this.setState(
+                nextProps.addWorkingDay
+            )
+        }
     }
     renderCellNotNull = (key, listRow) => {
         let arrCell = [];
@@ -77,7 +83,7 @@ class TableRow extends React.Component {
                                     arrCell.push(<td className="text-center"><input type="text"
                                                                                     onChange={this.onAddWorkingDay}
                                                                                     name={listRow.id}
-                                                                                    value={this.state.hasOwnProperty(listRow.id) ? this.state[listRow.id] : ""}
+                                                                                    value={this.props.addWorkingDay.hasOwnProperty(listRow.id) ? this.props.addWorkingDay[listRow.id] : ""}
                                                                                     className="form-control" id="id"
                                                                                     aria-describedby="basic-addon3"/>
                                     </td>)
@@ -127,6 +133,7 @@ class TableRow extends React.Component {
     }
 
     render() {
+        console.log(this.props.addWorkingDay)
         return (
             <tr>
                 {
