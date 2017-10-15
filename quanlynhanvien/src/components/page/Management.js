@@ -6,7 +6,7 @@ import TableHeader from '../TableHeader'
 import Table from '../Table'
 import TableBody from '../TableBody'
 import TableRow from '../TableRow'
-import {fetchDepartments, fetchEmployersManagement} from '../../actions/App'
+import {fetchDepartments, fetchEmployers} from '../../actions/App'
 import {deleteEmployer} from '../../actions/PostData'
 import {connect} from 'react-redux'
 import ModalEmployer from '../ModalEmployer'
@@ -21,17 +21,12 @@ class Management extends React.Component {
         }
     }
 
-    renderMonth = () => {
-        if (this.props.workingMonths.length > 0) {
-            return <DropDownBtn data={this.props.workingMonths}/>
-        }
-    }
+
     onClickDelete = (item) => {
-        deleteEmployer(item.id, this.props.fetchEmployersManagement.bind(this, this.state.selectedDepartment.id))
+        deleteEmployer(item.id, this.props.fetchEmployers.bind(this, this.state.selectedDepartment.id))
     }
 
     onClickEdit = item => {
-        console.log(item);
         this.setState({
             selectedItem: item
         })
@@ -58,7 +53,7 @@ class Management extends React.Component {
     }
 
     onDepartmentChange = (item) => {
-        this.props.fetchEmployersManagement(item.id)
+        this.props.fetchEmployers(item.id)
         this.setState({
             selectedDepartment: item
         })
@@ -70,6 +65,7 @@ class Management extends React.Component {
         }
     }
     onClickAdd = () => {
+        console.log('clickAdd')
         this.setState({
             selectedItem: null
         })
@@ -85,9 +81,7 @@ class Management extends React.Component {
                             this.renderDepartment()
 
                         }
-                        {
-                            this.renderMonth()
-                        }
+
 
                     </div>
                     <button onClick={this.onClickAdd} data-toggle="modal" data-target="#create" type="button"
@@ -108,7 +102,7 @@ class Management extends React.Component {
 
                 </Container>
                 <ModalEmployer data={this.state.selectedItem}
-                               fetchEmployersManagement={this.props.fetchEmployersManagement.bind(this, this.state.selectedDepartment ? this.state.selectedDepartment.id : null)}/>
+                               fetchEmployers={this.props.fetchEmployers.bind(this, this.state.selectedDepartment ? this.state.selectedDepartment.id : null)}/>
             </div>
         )
     }
@@ -118,8 +112,8 @@ class Management extends React.Component {
 const mapStateToProps = state => {
     return {
         departments: state.app.departments,
-        employers: state.app.employersManagement,
+        employers: state.app.employers,
         workingMonths: state.app.workingMonths
     }
 }
-export default connect(mapStateToProps, {fetchEmployersManagement, fetchDepartments})(Management)
+export default connect(mapStateToProps, {fetchEmployers, fetchDepartments})(Management)

@@ -19,7 +19,7 @@ export default class TableHeader extends React.Component {
     renderRow2Header = () => {
         let arr = []
         switch (this.props.display) {
-            case "0":
+            case 1:
                 arr.push(
                     <th className="align-middle text-center">Lương tháng</th>);
                 arr.push(
@@ -27,7 +27,7 @@ export default class TableHeader extends React.Component {
                 arr.push(
                     <th className="align-middle text-center">Phụ cấp</th>);
                 break;
-            case "1":
+            case 2:
                 arr.push(
                     <th className="align-middle text-center">Lương ngày</th>);
                 arr.push(
@@ -50,11 +50,11 @@ export default class TableHeader extends React.Component {
     renderTableHeader = () => {
         let arr = [];
         switch (this.props.display) {
-            case "0":
+            case 1:
                 arr.push(<th className="align-middle text-center" colSpan="3">Nhân viên Biên chế</th>
                 );
                 break;
-            case "1":
+            case 2:
                 arr.push(<th className="align-middle text-center" colSpan="2">Nhân viên Công nhật</th>)
                 break;
             default:

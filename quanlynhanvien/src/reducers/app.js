@@ -4,7 +4,9 @@ const initialState = {
     employers: {},
     departments: [],
     workingMonths: [],
-    employersManagement: {}
+    employersManagement: {},
+    salaryEmployers: {},
+    maxSalary: {}
 
 }
 
@@ -26,6 +28,14 @@ export default function app(state = initialState, action) {
         case Actions.FETCH_DEPARTMENTS_MANAGEMENT:
             return Object.assign({}, state, {
                 employersManagement: action.serverData
+            })
+        case Actions.FETCH_SALARY_EMPLOYER:
+            return Object.assign({}, state, {
+                salaryEmployers: action.serverData
+            })
+        case Actions.FETCH_MAX_SALARY:
+            return Object.assign({}, state, {
+                maxSalary: action.serverData
             })
         default:
             return state

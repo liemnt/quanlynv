@@ -1,11 +1,42 @@
 import React from 'react'
 import {connect} from 'react-redux';
-
+// arrCell.push(<td className="text-center"><input type="text" className="form-control" id="id"
+//                                                 aria-describedby="basic-addon3"/></td>)
 class TableRow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
+
     parseDepartment = (id) => {
         if (this.props.departments) {
-            return this.props.departments.find(item => item.id == id).name
+            let obj = this.props.departments.find(item => item.id == id)
+            if (obj) {
+                return obj.name
+            }
         }
+    }
+
+    onAddWorkingDay = (event) => {
+        if (this.props.onInputChange) {
+            this.props.onInputChange(event.target.name, event.target.value);
+        }
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+    renderCellNotNull = (key, listRow) => {
+        let arrCell = [];
+        if (key == "department_id") {
+            arrCell.push(<td scope="row">{this.parseDepartment(listRow[key])}</td>)
+        }
+        else {
+
+            arrCell.push(<td scope="row">{listRow[key]}</td>)
+        }
+
+
+        return arrCell;
     }
     renderCell = () => {
         let arrCell = [];
@@ -13,40 +44,43 @@ class TableRow extends React.Component {
         for (let key in listRow) {
             if (listRow.hasOwnProperty(key)) {
                 switch (this.props.display) {
-
-                    case "0":
-                        if (key != "day_salary") {
+                    case 1:
+                        if (key != "day_salary" && key != "working_day_number") {
                             if (listRow[key] != null) {
-                                arrCell.push(<td scope="row">{listRow[key]}</td>)
-
+                                arrCell.push(...this.renderCellNotNull(key, listRow))
                             }
                             else {
                                 arrCell.push(<td className="text-center"><i className="fa fa-ban"/></td>)
                             }
                         }
+
                         break;
-                    case "1":
+                    case 2:
                         if (key != "month_salary" && key != "salary_level" && key != "allowance") {
                             if (listRow[key] != null) {
-
-                                arrCell.push(<td scope="row">{listRow[key]}</td>)
-
+                                arrCell.push(...this.renderCellNotNull(key, listRow))
                             }
                             else {
-                                arrCell.push(<td className="text-center"><i className="fa fa-ban"/></td>)
+                                if (key == "working_day_number") {
+                                    arrCell.push(<td className="text-center"><input type="text"
+                                                                                    onChange={this.onAddWorkingDay}
+                                                                                    name={listRow.id}
+                                                                                    value={this.state.hasOwnProperty(listRow.id) ? this.state[listRow.id] : ""}
+                                                                                    className="form-control" id="id"
+                                                                                    aria-describedby="basic-addon3"/>
+                                    </td>)
+
+                                }
+                                else {
+                                    arrCell.push(<td className="text-center"><i className="fa fa-ban"/></td>)
+                                }
                             }
                         }
                         break;
                     default:
 
                         if (listRow[key] != null) {
-                            if (key == "department_id") {
-                                arrCell.push(<td scope="row">{this.parseDepartment(listRow[key])}</td>)
-                            }
-                            else {
-
-                                arrCell.push(<td scope="row">{listRow[key]}</td>)
-                            }
+                            arrCell.push(...this.renderCellNotNull(key, listRow))
                         }
                         else {
                             arrCell.push(<td className="text-center"><i className="fa fa-ban"/></td>)
@@ -57,20 +91,12 @@ class TableRow extends React.Component {
 
             }
 
+
         }
-        if (this.props.display) {
-            switch (this.props.display) {
-                case "0":
-                    break;
-                case "1":
-                    arrCell.push(<td className="text-center"><input type="text" className="form-control" id="id"
-                                                                    aria-describedby="basic-addon3"/></td>)
-                    break;
-            }
-        }
+
         switch (this.props.type) {
             case "statistic":
-                arrCell.push(<td className="text-center">Lương</td>)
+                // arrCell.push(<td className="text-center">Lương</td>)
                 break;
             case "management":
                 arrCell.push(<td>

@@ -6,23 +6,21 @@ import TableHeader from '../TableHeader'
 import Table from '../Table'
 import TableBody from '../TableBody'
 import TableRow from '../TableRow'
-import {fetchEmployers, fetchDepartments} from '../../actions/App'
+import {fetchEmployers, fetchDepartments, fetchMaxSalary} from '../../actions/App'
 import {connect} from 'react-redux'
 
 class Statistic extends React.Component {
-    componentWillMount = () => {
-
-    }
+    // componentWillMount = () => {
+    // }
     renderTableRow = () => {
-        return this.props.data.data.map((item) => {
-            return (
-                <TableRow type="statistic" data={item}></TableRow>
-            )
 
-        });
+        return (
+            <TableRow display={this.display()} type="statistic" data={this.props.maxSalary.data}></TableRow>
+        )
+
     }
     renderTableBody = () => {
-        if (this.props.data.error == null) {
+        if (this.props.maxSalary.errors === null) {
             return <TableBody>
                 {
                     this.renderTableRow()
@@ -31,9 +29,25 @@ class Statistic extends React.Component {
         }
     }
 
+    onChangeWorkingMonth = (item) => {
+        // this.setState({
+        //     selectedWorkingMonth: item
+        // });
+        this.props.fetchMaxSalary(item.id);
+    }
+
     renderMonth = () => {
-        if (this.props.month.error == null) {
-            return <DropDownBtn data={this.props.month.data}/>
+        if (this.props.workingMonths.length > 0) {
+            return <DropDownBtn onChange={this.onChangeWorkingMonth} data={this.props.workingMonths}/>
+        }
+    }
+
+    display = () => {
+        if (this.props.maxSalary.errors === null) {
+            if (this.props.maxSalary.data.day_salary) {
+                return 2
+            }
+            return 1
         }
     }
 
@@ -50,7 +64,7 @@ class Statistic extends React.Component {
 
                     </div>
                     <Table>
-                        <TableHeader type="statistic">
+                        <TableHeader display={this.display()} type="statistic">
 
                         </TableHeader>
                         {
@@ -66,63 +80,11 @@ class Statistic extends React.Component {
     }
 }
 
-Statistic.defaultProps = {
-    data: {
-        "errors": null,
-        "data": [
-            {
-                "id": 1,
-                "name": "Sinh Nguyen",
-                "phone": "01672699288",
-                "birthday": "1996-10-08",
-                "department_id": 1,
-                "month_salary": "9000000.0",
-                "salary_level": 2.6,
-                "allowance": "900000.0",
-                "day_salary": null
-            },
-            {
-                "id": 2,
-                "name": "string",
-                "phone": "string",
-                "birthday": "1996-05-31",
-                "department_id": 1,
-                "month_salary": null,
-                "salary_level": null,
-                "allowance": null,
-                "day_salary": "800000.0"
-            },
-            {
-                "id": 3,
-                "name": "Sinh",
-                "phone": "01672699288",
-                "birthday": "2017-10-13",
-                "department_id": 1,
-                "month_salary": "920000.0",
-                "salary_level": 2.6,
-                "allowance": "800000.0",
-                "day_salary": null
-            }
-        ]
-    },
-    month: {
-        error: null,
-        data: [{
-            id: "1",
-            name: "5/2017"
-        },
-            {
-                id: "1",
-                name: "5/2017"
-            }]
-    }
-}
-
 
 const mapStateToProps = state => {
     return {
-        // departments: state.app.departments,
-        data: state.app.employers
+        maxSalary: state.app.maxSalary,
+        workingMonths: state.app.workingMonths
     }
 }
-export default connect(null, {fetchEmployers, fetchDepartments})(Statistic)
+export default connect(mapStateToProps, {fetchEmployers, fetchDepartments, fetchMaxSalary})(Statistic)

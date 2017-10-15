@@ -12,6 +12,7 @@ export default class DropDownBtn extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props.data);
         this.state = {
             clickedItem: this.props.data[0]
         }
@@ -30,8 +31,8 @@ export default class DropDownBtn extends React.Component {
     }
     renderDepartment = () => {
         return this.props.data.map((item) => {
-            return <a onClick={this.onClick.bind(this, item)} key={item.id} className="dropdown-item"
-                      href="#">{this.parseName(item)}</a>
+            return <span onClick={this.onClick.bind(this, item)} key={item.id} className="dropdown-item"
+            >{this.parseName(item)}</span>
         })
     }
 

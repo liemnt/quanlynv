@@ -6,41 +6,55 @@ import TableHeader from '../TableHeader'
 import Table from '../Table'
 import TableBody from '../TableBody'
 import TableRow from '../TableRow'
-import {fetchEmployers, fetchDepartments} from '../../actions/App'
-import {connect} from 'react-redux'
+import {fetchDepartments, fetchSalaryEmployer} from '../../actions/App'
+import {postCalcParttimeSalary, postCalcFulltimeSalary} from '../../actions/PostData'
+import {connect} from 'react-redux';
 
-class Index extends React.Component {
+class Salary extends React.Component {
     componentWillMount = () => {
-        this.props.fetchEmployers();
         this.props.fetchDepartments();
     }
 
     constructor(props) {
         super(props);
-        if (this.props.staffs.error == null) {
-            if (this.props.staffs.data.length > 0) {
-                this.state = {
-                    type: this.props.staffs.data[0]
-                }
+        this.state = {
+            employerType: this.props.staffs[0],
+            addWorkingDay: {}
+        }
+    }
+
+    getData = (employerType, workingMonth) => {
+        if (employerType && workingMonth) {
+            if (employerType.id && workingMonth.id) {
+                this.props.fetchSalaryEmployer(employerType.id, workingMonth.id);
             }
         }
     }
 
     clickStaff = (item) => {
         this.setState({
-            type: item
+            employerType: item
+        })
+        this.getData(item, this.state.selectedWorkingMonth);
+    }
+    onCellWorkingDayChange = (id, value) => {
+        this.setState({
+            addWorkingDay: Object.assign(this.state.addWorkingDay, {
+                [id]: value
+            })
         })
     }
     renderTableRow = () => {
-        return this.props.data.data.map((item) => {
+        return this.props.employers.data.map((item) => {
             return (
-                <TableRow type="statistic" display={this.state.type.id} data={item}/>
+                <TableRow onInputChange={this.onCellWorkingDayChange} type="statistic"
+                          display={this.state.employerType.id} data={item}/>
             )
 
         });
     }
     renderTableBody = () => {
-        if (this.props.data.error == null) {
+        if (this.props.employers.errors === null) {
             return <TableBody>
                 {
                     this.renderTableRow()
@@ -49,15 +63,55 @@ class Index extends React.Component {
         }
     }
 
+    onChangeWorkingMonth = (item) => {
+        this.setState({
+            selectedWorkingMonth: item
+        });
+        this.getData(this.state.employerType, item);
+    }
+    onCalcSalary = () => {
+        if (this.state.employerType.id == 2) {
+            let addWorkingDay = this.state.addWorkingDay;
+            for (let key in addWorkingDay) {
+                if (addWorkingDay.hasOwnProperty(key)) {
+                    let data = {
+                        "part_time_employer_id": key,
+                        "working_day_number": parseInt(addWorkingDay[key]),
+                        "working_month_id": this.state.selectedWorkingMonth.id.toString()
+                    }
+                    postCalcParttimeSalary(data, this.getData.bind(this, this.state.employerType, this.state.selectedWorkingMonth))
+                    console.log(key);
+                }
+            }
+        }
+        if (this.state.employerType.id == 1) {
+            let employers = this.props.employers;
+            employers.data.map((item) => {
+                if (item.total_salary == null) {
+                    let data = {
+                        "full_time_employer_id": item.id,
+                        "working_month_id": this.state.selectedWorkingMonth.id.toString()
+                    }
+                    postCalcFulltimeSalary(data, this.getData.bind(this, this.state.employerType, this.state.selectedWorkingMonth));
+                }
+            })
+        }
+
+    }
+    renderMonth = () => {
+        if (this.props.workingMonths.length > 0) {
+            return <DropDownBtn onChange={this.onChangeWorkingMonth} data={this.props.workingMonths}/>
+        }
+    }
+
     renderDepartment = () => {
-        if (this.props.departments.error == null) {
-            return <DropDownBtn data={this.props.departments.data}/>
+        debugger
+        if (this.props.departments.length > 0) {
+            return <DropDownBtn data={this.props.departments}/>
         }
     }
     renderStaff = () => {
-        if (this.props.staffs.error == null) {
-            return <DropDownBtn clickStaff={this.clickStaff} data={this.props.staffs.data}/>
-        }
+        return <DropDownBtn onChange={this.clickStaff} data={this.props.staffs}/>
     }
 
     render() {
@@ -68,21 +122,20 @@ class Index extends React.Component {
                     <Title title="Danh sách nhân viên theo phòng ban"/>
 
                     <div className="btn-group btn-middle align-middle">
-
-                        {
-                            this.renderDepartment()
-                        }
                         {
                             this.renderStaff()
                         }
+                        {
+                            this.renderMonth()
+                        }
                     </div>
 
-                    <button type="button" className="btn btn-success btn-right"><i
+                    <button onClick={this.onCalcSalary} type="button" className="btn btn-success btn-right"><i
                         className="fa fa-calculator">&nbsp;&nbsp;</i>Tính lương
                     </button>
 
                     <Table>
-                        <TableHeader display={this.state.type.id} type="statistic">
+                        <TableHeader display={this.state.employerType.id} type="statistic">
 
                         </TableHeader>
                         {
@@ -97,74 +150,22 @@ class Index extends React.Component {
         )
     }
 }
-Index.defaultProps = {
-    data: {
-        "errors": null,
-        "data": [
-            {
-                "id": 1,
-                "name": "Sinh Nguyen",
-                "phone": "01672699288",
-                "birthday": "1996-10-08",
-                "department_id": 1,
-                "month_salary": "9000000.0",
-                "salary_level": 2.6,
-                "allowance": "900000.0",
-                "day_salary": null
-            },
-            {
-                "id": 2,
-                "name": "string",
-                "phone": "string",
-                "birthday": "1996-05-31",
-                "department_id": 1,
-                "month_salary": null,
-                "salary_level": null,
-                "allowance": null,
-                "day_salary": "800000.0"
-            },
-            {
-                "id": 3,
-                "name": "Sinh",
-                "phone": "01672699288",
-                "birthday": "2017-10-13",
-                "department_id": 1,
-                "month_salary": "920000.0",
-                "salary_level": 2.6,
-                "allowance": "800000.0",
-                "day_salary": null
-            }
-        ]
-    },
-    departments: {
-        error: null,
-        data: [{
-            id: "1",
-            name: "Nhân viên"
-        },
-            {
-                id: "1",
-                name: "Quản lý"
-            }]
-    },
-    staffs: {
-        error: null,
-        data: [{
-            id: "0",
-            name: "Nhân viên biên chế"
-        },
-            {
-                id: "1",
-                name: "Nhân viên công nhật"
-            }]
-    }
-}
 
+Salary.defaultProps = {
+    staffs: [{
+        id: 1,
+        name: "Nhân viên biên chế"
+    }, {
+        id: 2,
+        name: "Nhân viên công nhật"
+    }]
+}
 
 const mapStateToProps = state => {
     return {
-        // departments: state.app.departments,
-        data: state.app.employers
+        departments: state.app.departments,
+        employers: state.app.salaryEmployers,
+        workingMonths: state.app.workingMonths
     }
 }
-export default connect(null, {fetchEmployers, fetchDepartments})(Index)
+export default connect(mapStateToProps, {fetchDepartments, fetchSalaryEmployer})(Salary)

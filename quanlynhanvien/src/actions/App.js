@@ -75,3 +75,35 @@ export function fetchDepartments() {
         })
     }
 }
+
+export function fetchSalaryEmployer(typeEmployer, workingMonth) {
+    return function (dispatch) {
+        axios.get(api.apiGetSalaryEmployers(typeEmployer, workingMonth)).then(
+            (response) => {
+                dispatch({
+                    type: Types.FETCH_SALARY_EMPLOYER,
+                    serverData: response.data
+
+                })
+            }).catch((err) => {
+            console.log(err)
+        })
+    }
+}
+
+
+export function fetchMaxSalary(workingMonth) {
+    return function (dispatch) {
+        axios.get(api.getMaxSalary(workingMonth)).then(
+            (response) => {
+                dispatch({
+                    type: Types.FETCH_MAX_SALARY,
+                    serverData: response.data
+
+                })
+            }).catch((err) => {
+            console.log(err)
+        })
+    }
+}
+

@@ -2,37 +2,41 @@ import React from 'react'
 import $ from 'jquery'
 import 'bootstrap/dist/js/bootstrap.min'
 import 'jquery-ui/ui/widgets/datepicker'
-import {postFulltimeEmployer, postParttimeEmployer} from '../actions/PostData'
+import {postFulltimeEmployer, postParttimeEmployer, putFullTimeEmployer, putParttimeEmployer} from '../actions/PostData'
 import DropDownBtn from '../components/DropDownBtn'
 import {connect} from 'react-redux';
+
 
 class ModalEmployer extends React.Component {
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.data) {
-            this.setState({
-                "name": nextProps.data.name,
-                "phone": nextProps.data.phone,
-                "birthday": nextProps.data.birthday,
-                "department_id": nextProps.data.department_id,
-                salary_level: nextProps.data.salary_level ? nextProps.data.salary_level : "",
-                month_salary: nextProps.data.month_salary ? nextProps.data.month_salary : null,
-                allowance: nextProps.data.allowance ? nextProps.data.allowance : null,
-                day_salary: nextProps.data.day_salary ? nextProps.data.day_salary : null
-            })
-        }
-        if (nextProps.data === null) {
-            this.setState({
-                "salary_level": "",
-                "name": "",
-                "month_salary": "",
-                "phone": "",
-                "birthday": "",
-                "allowance": "",
-                "department_id": this.props.departments.length > 0 ? this.props.departments[0].id : "",
-                day_salary: "",
+            this.setState(nextProps.data);
+            if (nextProps.data.day_salary) {
+                this.setState({
+                    type: 'congNhat'
+                })
+            } else {
+                this.setState({
+                    type: 'bienChe'
+                })
+            }
 
-            })
         }
+        if (nextProps.data == null) {
+            this.setState(this.emptyObject)
+        }
+
+    }
+
+    emptyObject = {
+        "salary_level": "",
+        "name": "",
+        "month_salary": "",
+        "phone": "",
+        "birthday": "",
+        "allowance": "",
+        "department_id": this.props.departments.length > 0 ? this.props.departments[0].id : "",
+        day_salary: "",
     }
     onClickSave = () => {
         let data = {
@@ -41,16 +45,30 @@ class ModalEmployer extends React.Component {
             "birthday": this.parseBirthday(this.state.birthday),
             "department_id": this.state.department_id,
         }
+
         if (this.state.type === "bienChe") {
             data.salary_level = this.state.salary_level;
             data.month_salary = this.state.month_salary;
             data.allowance = this.state.allowance;
-            postFulltimeEmployer(data, this.props.fetchEmployersManagement);
+            if (this.props.data) {
+                putFullTimeEmployer(this.props.data.id, data, this.props.fetchEmployers);
+            }
+            else {
+                postFulltimeEmployer(data, this.props.fetchEmployers);
+            }
         }
         if (this.state.type === "congNhat") {
             data.day_salary = this.state.day_salary;
-            postParttimeEmployer(data, this.props.fetchEmployersManagement)
+            if (this.props.data) {
+                putParttimeEmployer(this.props.data.id, data, this.props.fetchEmployers);
+            }
+            else {
+
+                postParttimeEmployer(data, this.props.fetchEmployers)
+            }
         }
+        $('#create').modal('toggle');
+
     }
 
 
@@ -66,18 +84,7 @@ class ModalEmployer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            type: null,
-            "salary_level": "",
-            "name": "",
-            "month_salary": "",
-            "phone": "",
-            "birthday": "",
-            "allowance": "",
-            "department_id": this.props.departments.length > 0 ? this.props.departments[0].id : "",
-            day_salary: "",
-
-        }
+        this.state = Object.assign(this.emptyObject, {type: null})
     }
 
     onChangeText = (event) => {
@@ -145,6 +152,7 @@ class ModalEmployer extends React.Component {
 
     }
     onSelectDepartment = (item) => {
+        console.log('departmentChange', item)
         this.setState({
             department_id: item.id
         })
@@ -153,7 +161,6 @@ class ModalEmployer extends React.Component {
     renderDropDownBtn = () => {
         if (this.props.departments.length > 0) {
             return (
-
                 <DropDownBtn onChange={this.onSelectDepartment} default data={this.props.departments}></DropDownBtn>
             )
         }
