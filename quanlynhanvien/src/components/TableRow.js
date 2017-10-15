@@ -1,5 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux';
+import {numberWithCommas} from '../utils/Utils'
+import {parseBirthdayForClient} from '../utils/Utils'
 // arrCell.push(<td className="text-center"><input type="text" className="form-control" id="id"
 //                                                 aria-describedby="basic-addon3"/></td>)
 class TableRow extends React.Component {
@@ -27,15 +29,25 @@ class TableRow extends React.Component {
     }
     renderCellNotNull = (key, listRow) => {
         let arrCell = [];
-        if (key == "department_id") {
-            arrCell.push(<td scope="row">{this.parseDepartment(listRow[key])}</td>)
+        switch (key) {
+            case "department_id":
+                arrCell.push(<td scope="row">{this.parseDepartment(listRow[key])}</td>);
+                break;
+            case "day_salary":
+            case "allowance":
+            case "month_salary":
+            case "total_salary":
+                arrCell.push(<td scope="row">{numberWithCommas(parseInt(listRow[key]).toFixed(0).toString())}</td>);
+                break;
+            case "birthday":
+                arrCell.push(<td scope="row">{parseBirthdayForClient(listRow[key])}</td>);
+                break;
+            default:
+                arrCell.push(<td scope="row">{listRow[key]}</td>);
+                break;
+
+
         }
-        else {
-
-            arrCell.push(<td scope="row">{listRow[key]}</td>)
-        }
-
-
         return arrCell;
     }
     renderCell = () => {
@@ -101,11 +113,11 @@ class TableRow extends React.Component {
             case "management":
                 arrCell.push(<td>
                     <button data-toggle="modal" data-target="#create" onClick={this.props.onClickEdit}
-                            className="btn btn-info"><i className="fa fa-edit">&nbsp;&nbsp;</i>Sửa
+                            className="btn btn-resetWidth btn-info"><i className="fa fa-edit">&nbsp;&nbsp;</i>Sửa
                     </button>
                 </td>);
                 arrCell.push(<td>
-                    <button onClick={this.props.onClickDelete} className="btn btn-danger"><i
+                    <button onClick={this.props.onClickDelete} className="btn btn-resetWidth btn-danger"><i
                         className="fa fa-remove">&nbsp;&nbsp;</i>Xóa
                     </button>
                 </td>)

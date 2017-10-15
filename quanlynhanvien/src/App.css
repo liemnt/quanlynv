@@ -25,6 +25,10 @@
     margin-bottom: 20px;
 }
 
+.btn-resetWidth {
+    min-width: initial;
+}
+
 .margin-R10 {
     margin-right: 10px;
 }

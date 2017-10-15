@@ -4,6 +4,7 @@ import 'bootstrap/dist/js/bootstrap.min'
 import 'jquery-ui/ui/widgets/datepicker'
 import {postFulltimeEmployer, postParttimeEmployer, putFullTimeEmployer, putParttimeEmployer} from '../actions/PostData'
 import DropDownBtn from '../components/DropDownBtn'
+import {parseBirthdayForServer} from '../utils/Utils'
 import {connect} from 'react-redux';
 
 
@@ -42,7 +43,7 @@ class ModalEmployer extends React.Component {
         let data = {
             "name": this.state.name,
             "phone": this.state.phone,
-            "birthday": this.parseBirthday(this.state.birthday),
+            "birthday": parseBirthdayForServer(this.state.birthday),
             "department_id": this.state.department_id,
         }
 
@@ -69,17 +70,6 @@ class ModalEmployer extends React.Component {
         }
         $('#create').modal('toggle');
 
-    }
-
-
-    parseBirthday = (string) => {
-        let arr = string.split('/');
-        let newDate = "";
-        for (let i = arr.length - 1; i >= 0; i--) {
-            newDate += "-" + arr[i];
-        }
-        newDate = newDate.substr(1);
-        return newDate
     }
 
     constructor(props) {
